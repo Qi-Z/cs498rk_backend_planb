@@ -1,12 +1,12 @@
 var LocalStrategy = require('passport-local').Strategy;
-var User = require('../models/user');
+var User = require('../models/darsuser');
 
 /**
  * Specifies what strategy we'll use
  */
 module.exports = function(passport) {
     passport.serializeUser(function(user, done) {
-        done(null, user.id);
+        done(null, user._id);
     });
 
     passport.deserializeUser(function(id, done) {
@@ -16,11 +16,12 @@ module.exports = function(passport) {
     });
 
     passport.use('local-signup', new LocalStrategy({
-        usernameField : 'email',
+        usernameField : 'netid',
         passwordField : 'password',
+            passReqToCallback: true
     },
-    function(email, password, done) {
-        User.findOne({'email' : email}, function(err, user) {
+    function(req, netid, password, done) {
+        User.findOne({'netid' : netid}, function(err, user) {
             if ( err ) {
                 return done(err);
             } else if ( user ) {
@@ -28,9 +29,15 @@ module.exports = function(passport) {
             } else {
                 var newUser = new User();
 
-                newUser.email = email;
+                // newUser.email = netid;
+                // newUser.password = newUser.generateHash(password);
+                newUser.netid = netid;
+                newUser.name = req.body.name;
                 newUser.password = newUser.generateHash(password);
-
+                newUser.graduationDate = req.body.graduationDate;
+                newUser.classTaken = req.body.classTaken;
+                newUser.classInProgress = req.body.classInProgress;
+                newUser.classRegistered = req.body.classRegistered;
                 newUser.save(function(err) {
                     return done(null, newUser);
                 });
@@ -40,11 +47,11 @@ module.exports = function(passport) {
     }));
 
     passport.use('local-login', new LocalStrategy({
-        usernameField: 'email',
+        usernameField: 'netid',
         passwordField: 'password',
     },
-    function(email, password, done) {
-        User.findOne({'email': email}, function(err, user) {
+    function(netid, password, done) {
+        User.findOne({'netid': netid}, function(err, user) {
             if ( err ) {
                 return done(err);
             } else if ( !user || !user.validPassword(password) ) {

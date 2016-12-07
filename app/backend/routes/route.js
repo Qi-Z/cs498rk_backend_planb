@@ -1,11 +1,13 @@
 module.exports = function(router, passport) {
 
     router.post('/signup', passport.authenticate('local-signup'), function(req, res) {
-        res.status(200).json({ user: req.user.email });
+        //res.status(200).json({ user: req.user.email });
+        res.status(200).json({ user: req.user });
     });
 
     router.post('/login', passport.authenticate('local-login'), function(req, res) {
-        res.status(200).json({ user: req.user.email });
+        //res.status(200).json({ user: req.user.email });
+        res.status(200).json({ user: req.user});
     });
 
     router.get('/profile', isLoggedIn, function(req, res) {
