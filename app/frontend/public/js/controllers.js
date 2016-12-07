@@ -19,8 +19,10 @@ mp4Controllers.controller('LoginController', ['$scope', '$http', '$location',  f
 mp4Controllers.controller('SignupController', ['$scope', '$http', '$location', function($scope, $http, $location) {
     $scope.submit = function() {
         var data = {
-            email: $scope.email,
-            password: $scope.password
+            netid: $scope.netid,
+            password: $scope.password,
+            name: $scope.name,
+            graduationDate: $scope.graduationDate
         }
         $http.post('/api/signup', data)
             .success(function(data) {
@@ -34,7 +36,7 @@ mp4Controllers.controller('SignupController', ['$scope', '$http', '$location', f
 mp4Controllers.controller('ProfileController', ['$scope', '$http', '$location', function($scope, $http, $location) {
     $http.get('/api/profile')
         .success(function(data) {
-            $scope.email = data.user.email;
+            $scope.netid = data.user.netid;
             console.log(data);
         }).error(function(data) {
             $location.path('/login');
