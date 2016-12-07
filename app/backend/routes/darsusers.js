@@ -1,7 +1,6 @@
 /**
  * Created by qizhang on 11/24/16.
  */
-var secrets = require('../config/secrets');
 var DARSUser = require('../models/darsuser');
 var mongoose = require('mongoose');
 
