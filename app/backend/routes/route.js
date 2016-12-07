@@ -1,22 +1,26 @@
 module.exports = function(router, passport) {
 
     router.post('/signup', passport.authenticate('local-signup'), function(req, res) {
-        console.log("req is : =====================================================");
+        console.log("signup req is : =====================================================");
         console.log(req);
-        console.log("Is logged in?? ================================================");
+        console.log("signup Is logged in?? ================================================");
         console.log(req.isAuthenticated());
         res.status(200).json({ user: req.user });
     });
 
     router.post('/login', passport.authenticate('local-login'), function(req, res) {
-        console.log("req is : =====================================================");
+        console.log("login req is : =====================================================");
         console.log(req);
-        console.log("Is logged in?? ================================================");
+        console.log("login Is logged in?? ================================================");
         console.log(req.isAuthenticated());
         res.status(200).json({ user: req.user });
     });
 
     router.get('/profile', isLoggedIn, function(req, res) {
+        console.log("for profile req is : =====================================================");
+        console.log(req);
+        console.log("profile Is logged in?? ================================================");
+        console.log(req.isAuthenticated());
         res.status(200).json({ user: req.user, message: "Welcome!" });
     });
 
