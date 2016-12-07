@@ -1,6 +1,8 @@
 module.exports = function(router, passport) {
 
     router.post('/signup', passport.authenticate('local-signup'), function(req, res) {
+        console.log("req is : =====================================================");
+        console.log(req);
         res.status(200).json({ user: req.user });
     });
 
