@@ -6,7 +6,7 @@ var User = require('../models/user');
  */
 module.exports = function(passport) {
     passport.serializeUser(function(user, done) {
-        done(null, user._id);
+        done(null, user.id);
     });
 
     passport.deserializeUser(function(id, done) {
@@ -18,7 +18,6 @@ module.exports = function(passport) {
     passport.use('local-signup', new LocalStrategy({
         usernameField : 'email',
         passwordField : 'password',
-            //passReqToCallback: true
     },
     function(email, password, done) {
         User.findOne({'email' : email}, function(err, user) {
@@ -29,14 +28,8 @@ module.exports = function(passport) {
             } else {
                 var newUser = new User();
 
-                //newUser.netid = netid;
                 newUser.email = email;
                 newUser.password = newUser.generateHash(password);
-                // newUser.name = req.body.name;
-                // newUser.graduationDate = req.body.graduationDate;
-                // newUser.classTaken = req.body.classTaken;
-                // newUser.classInProgress = req.body.classInProgress;
-                // newUser.classRegistered = req.body.classRegistered;
 
                 newUser.save(function(err) {
                     return done(null, newUser);
